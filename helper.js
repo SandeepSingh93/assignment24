@@ -24,7 +24,7 @@ async function getSSLData(url) {
     const urlObject = new URL(url)
     const params = { host: urlObject.hostname, port: 443 };
     const socket = tls.connect(params);
-    let cert = undefined
+    let cert = ''
 
     socket.on('secureConnect', () => {
         cert = socket.getPeerCertificate();
@@ -53,7 +53,7 @@ async function getASNData(ipAddress) {
 }
 
 async function getLanguage(url) {
-    return undefined
+    return ''
 }
 
 async function getUrlData(url) {

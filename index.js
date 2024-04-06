@@ -1,23 +1,23 @@
 const helper = require('./helper');
 const express = require('express');
 const bodyParser = require('body-parser')
-// const sqlite3 = require('sqlite3')
+const sqlite3 = require('sqlite3')
 
 // // CONNECT TO DATABASE
-// const db = new sqlite3.Database('./bolster_database.db', (err) => {
-//     if (err) {
-//         console.error("Error opening database " + err.message);
-//     } else {
-//         db.run('CREATE TABLE data( \
-//             id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
-//             json_data TEXT\
-//         )', (err) => {
-//             if (err) {
-//                 console.log("Table already exists.");
-//             }
-//         });
-//     }
-// });
+const db = new sqlite3.Database('./bolster_database.db', (err) => {
+    if (err) {
+        console.error("Error opening database " + err.message);
+    } else {
+        db.run('CREATE TABLE data( \
+            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,\
+            json_data TEXT\
+        )', (err) => {
+            if (err) {
+                console.log("Table already exists.");
+            }
+        });
+    }
+});
 
 const app = express();
 app.use(bodyParser.json());
@@ -32,15 +32,7 @@ app.post('/api/scan-url', async (req, res) => {
             destinationUrl, pageSource, sslData,
             asnData, pageLanguage } = await helper.getUrlData(url);
         // db.run(`INSERT INTO data (json_data)\
-        //         VALUES ("{\
-        //             "screenshot":${screenshot},\
-        //             "ipAddress": ${ipAddress},\
-        //             "source_url": ${sourceUrl},\
-        //             "destination_url": ${destinationUrl},\
-        //             "ssl_data": ${sslData},\
-        //             "asn_data": ${asnData},\
-        //             "page_language": ${pageLanguage}\
-        //         }")`
+        //         VALUES ("${JSON.stringify({ screenshot, ipAddress, sourceUrl, destinationUrl, pageSource, sslData, asnData, pageLanguage })}")`
         // );
         res.status(200).json({
             screenshot, ipAddress, sourceUrl,
